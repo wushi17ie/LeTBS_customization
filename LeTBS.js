@@ -81,7 +81,7 @@
 #       *Battlers are correctly revived
 #       *The turn order visual is correctly updated when en entity is revived
 #       *The wait parameter for tile effects is correctly applied
-#       *The parameter 'false' in the sequence commands 'push' and 'pull' to avoid 
+#       *The parameter 'false' in the sequence commands 'push' and 'pull' to avoid
 #        knockback damage now works as intended
 #       *Fixed 2 bugs related to the mark and tile effect add-on and improved it (1.1)
 #       *Selected cells with TouchInput on large map are correctly handled
@@ -326,7 +326,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Misc --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Exploration Input
  * @desc Input to trigger exploration.
@@ -358,7 +358,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Turn Order --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Turn Order Fair Distribution ?
  * @desc Allow a fair Distribution of the turn order ?
@@ -370,14 +370,14 @@ Lecode.S_TBS = {};
  *
  * @param -- Scopes --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Scope Cell Width
  * @desc Width of cells.
  * @default 46
  *
  * @param Scope Cell Height
- * @desc Height of cells. 
+ * @desc Height of cells.
  * @default 46
  *
  * @param Obstacle Region Id
@@ -390,7 +390,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Move Action --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Move Scope
  * @desc Default move scope data.
@@ -426,7 +426,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Attack Action --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Attack Animation
  * @desc Default attack animation.
@@ -466,7 +466,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Skill Action --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Skill Sequence
  * @desc Default skill sequence.
@@ -502,7 +502,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Item Action --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Item Sequence
  * @desc Default item sequence.
@@ -538,7 +538,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Directional Damage --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Back Directional Damage Effects
  * @desc Damage % when a battler is hit on the back.
@@ -554,7 +554,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Collision Damage --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Collision Formula
  * @desc Formula to evaluate collision damage.
@@ -566,7 +566,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Motions --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Battlers Move Speed
  * @desc Default move speed.
@@ -578,7 +578,7 @@ Lecode.S_TBS = {};
  *
  * @param -- AI --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Default Ai Pattern
  * @desc Default AI pattern.
@@ -606,7 +606,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Actions Restrictions --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param One Time Move
  * @desc Enable the one time move feature. (See doc)
@@ -622,7 +622,7 @@ Lecode.S_TBS = {};
  *
  * @param -- Battle End --
  * @desc [No description]
- * @default 
+ * @default
  *
  * @param Escape Sound
  * @desc Sound when the party try to escape.
@@ -636,7 +636,7 @@ Lecode.S_TBS = {};
  * @desc Default collapse animation.
  * @default 136
  *
- * 
+ *
  * @help
  * ============================================================================
  * Introduction
@@ -645,14 +645,14 @@ Lecode.S_TBS = {};
  * This plugin adds a tactical battle system to the engine.
  * LeTBS is inspired from Dofus and Wakfu, both great MMORPG games that use
  * a tactical battle system.
- * 
+ *
  * ============================================================================
  * WARNING: Work In Progress
  * ============================================================================
  *
  * The plugin is HEAVY and currentrly being worked on.
  * You can already do amazing things with it, but a lot of features are missing.
- * 
+ *
  * The help content as well as the plugin parameters of the core plugins
  * and the add-on will be fully filled once we hit the GOLD version.
  */
@@ -683,7 +683,7 @@ Lecode.S_TBS.turnOrderFairDistribution = String(parameters["Turn Order Fair Dist
 Lecode.S_TBS.turnOrderSortMethod = String(parameters["Turn Order Sort Method"] || "b._battler.agi - a._battler.agi");	//	(): Method used to determine the turn order
 // Divider: -- Scopes --
 Lecode.S_TBS.scopeCellWidth = Number(parameters["Scope Cell Width"] || 46)	;	//	(): Width of cells.
-Lecode.S_TBS.scopeCellHeight = Number(parameters["Scope Cell Height"] || 46)	;	//	(): Height of cells. 
+Lecode.S_TBS.scopeCellHeight = Number(parameters["Scope Cell Height"] || 46)	;	//	(): Height of cells.
 Lecode.S_TBS.obstacleRegionId = Number(parameters["Obstacle Region Id"] || 250)	;	//	(): Region ID for obstacles.
 Lecode.S_TBS.freeObstacleRegionId = Number(parameters["Free Obstacle Region Id"] || 249)	;	//	(): Region ID for non-blocking los obstacles.
 // Divider: -- Move Action --
@@ -6792,7 +6792,7 @@ TBSAiManager.prototype.func_IsInMeleeWith = function (target) {
     if (!cellTarget) return false;
     target = cellTarget.getEntity();
     if (!target) return false;
-    if (target.isNonActiveSummon()) return false;
+    // if (target.isNonActiveSummon()) return false;
     return LeUtilities.distanceBetweenCells(cellTarget, this._entity.getCell()) <= 1;
 };
 
@@ -6835,7 +6835,7 @@ TBSAiManager.prototype.getAlliesOf = function (battler, needAlive) {
 };
 
 TBSAiManager.prototype.isAlly = function (entity) {
-    if (entity.isSummon()) return entity._summonData.caster.battler().isActor() === this._battler.isActor();
+    // if (entity.isSummon()) return entity._summonData.caster.battler().isActor() === this._battler.isActor();
     return this._battler.isActor() === entity.battler().isActor();
 };
 
@@ -8720,6 +8720,7 @@ TBSEntity.prototype.isRequestedPosePlayed = function () {
 };
 
 TBSEntity.prototype.defaultPose = function () {
+    // This is the idle pose when the turn is active.
     return "idle";
 };
 

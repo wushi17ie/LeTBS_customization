@@ -33,46 +33,46 @@ Lecode.S_TBS.WinConditions = {};
  *
  * With this add-on you can set up multiple battle conditions for your fights.
  * Before starting your battles, make sure there is at least one battle condition.
- * 
+ *
  * ============================================================================
  * Plugin Commands
  * ============================================================================
- * 
+ *
  * *LeTBSWinCds Clear
- * Remove all win conditions. Make sure to add at least one condition after that, 
+ * Remove all win conditions. Make sure to add at least one condition after that,
  * otherwise the system will throw an error.
- * 
+ *
  * *LeTBSWinCds Add Defeat All
  * All enemies must be defeated.
- * 
+ *
  * *LeTBSWinCds Add Defeat Enemies [NBR] [ID]
- * The party must defeat [NBR] amount of enemies with the specified ID. 
+ * The party must defeat [NBR] amount of enemies with the specified ID.
  * [NBR] can be "All".
- * 
+ *
  * *LeTBSWinCds Add Defeat FlaggedEntity [FlagID]
  * The party must defeat the flagged entity.
- * 
+ *
  * *LeTBSWinCds Add Prevent ActorDeath [ID]
  * The specified actor should not be defeated.
- * 
+ *
  * *LeTBSWinCds Add Prevent EntityDeath [FlagID]
  * The flagged entity should not be defeated.
- * 
+ *
  * *LeTBSWinCds Add Flag [FlagID] [TEXT]
- * The specified flag should be activated. The text will be displayed on the 
+ * The specified flag should be activated. The text will be displayed on the
  * win conditions window.
  * Example: LeTBSWinCds Add Flag chest Find the golden chest
- * 
+ *
  * *LeTBSWinCds ActivateFlag [FlagID]
  * Activate a flag.
- * 
+ *
  * *LeTBSWinCds DeactivateFlag [FlagID]
  * Deactivate a flag.
- * 
+ *
  * ============================================================================
  * How To Flag An Entity Or An Event
  * ============================================================================
- * 
+ *
  * Use the comment <LeTBS> Flag: ID on the event or entity's start event.
  */
 //#=============================================================================
@@ -105,8 +105,15 @@ Game_Interpreter.prototype.pluginCommand = function (command, args) {
             case 'Clear':
                 LeTBSWinCds.clear();
                 break;
+            case 'Win':
+                LeTBSWinCds.addImmediateWin();
+                break;
             case 'Add':
                 switch (args[1]) {
+                    case "Turn":
+                      var numTurn = Number(args[2]);
+                      LeTBSWinCds.addTurn(numTurn);
+                      break;
                     case "Defeat":
                         if (args[2] === "All") {
                             LeTBSWinCds.addDefeatAll();
@@ -250,6 +257,10 @@ function LeTBSWinCds() {
 }
 
 LeTBSWinCds.setup = function () {
+    // _turn只用来显示胜利条件
+    // 需要搭配_immediateWin敌群时间使用
+    this._turn = 0;
+    this._immediateWin = false;
     this._defeatAll = false;
     this._defeatAllEnemies = [];
     this._defeatXEnemies = [];
@@ -263,6 +274,14 @@ LeTBSWinCds.setup = function () {
 
 LeTBSWinCds.clear = function () {
     this.setup();
+};
+
+LeTBSWinCds.addTurn = function (numTurn) {
+    this._turn = numTurn;
+};
+
+LeTBSWinCds.addImmediateWin = function () {
+    this._immediateWin = true;
 };
 
 LeTBSWinCds.addDefeatAll = function () {
@@ -296,6 +315,8 @@ LeTBSWinCds.addFlag = function (flagId, flagName) {
 
 LeTBSWinCds.getConditionTexts = function () {
     var texts = [];
+    if (this._turn > 0)
+        texts.push("撑过"+ this._turn + "回合");
     if (this._defeatAll)
         texts.push("Defeat all enemies");
     this._defeatAllEnemies.forEach(function (enemyId) {
@@ -332,6 +353,8 @@ LeTBSWinCds.noConditions = function () {
 };
 
 LeTBSWinCds.checkVictory = function () {
+    if (this._immediateWin)
+      return true;
     var nbrSuccess = 0;
     var goalSuccess = this.getConditionTexts().length;
     if (this._defeatAll && BattleManagerTBS.isAllEnemyDead())

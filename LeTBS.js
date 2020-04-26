@@ -1959,12 +1959,17 @@ BattleManagerTBS.createStartCells = function () {
         var data = {};
         if (note.match(/<Enemy Cell>/i)) {
             data.type = "enemy";
-        } else if (note.match(/<Enemy Cell\s?:\s?(.+)>/i)) {
+        } else if (note.match(/<Enemy Cell\s?:\s?(.+)>,/i)) {   // 逗号后面是 direction
+            console.log(note)
+            console.log(RegExp.$1)
+            console.log(Number(RegExp.$1))
             data.type = "enemy";
             data.fixed = Number(RegExp.$1);
         } else if (note.match(/<Actor Cell>/i)) {
             data.type = "actor";
-        } else if (note.match(/<Actor Cell\s?:\s?(.+)>/i)) {
+        } else if (note.match(/<Actor Cell\s?:\s?(.+)>,/i)) {   // 逗号后面是 direction
+            console.log(note)
+            console.log(RegExp.$1)
             data.type = "actor";
             data.fixed = Number(RegExp.$1);
         }
@@ -2398,7 +2403,8 @@ BattleManagerTBS.processActorsPrePositioning = function () {
         var cell = this.allyStartCells().filter(function (cell) {
             return cell._positioningData.fixed === actor.actorId();
         })[0];
-        var entity = new TBSEntity(actor, this.getLayer("battlers"));
+        var direction = this.getDirectionFromCellNote(cell);
+        var entity = new TBSEntity(actor, this.getLayer("battlers"), direction);
         entity.setCell(cell);
         this._battlerEntities.push(entity);
         LeUtilities.getScene().onActorPrePositioning(actor);
@@ -2430,12 +2436,32 @@ BattleManagerTBS.placeNextEnemy = function () {
         cell.select();
         this.centerActiveCell();
         this.updateCursor();
-        var entity = new TBSEntity(enemy, this.getLayer("battlers"));
+        var direction = this.getDirectionFromCellNote(cell);
+        var entity = new TBSEntity(enemy, this.getLayer("battlers"), direction);
         entity.setCell(cell);
         entity.newAnimation(Lecode.S_TBS.placedBattlerAnim, false, 0);
         this._battlerEntities.push(entity);
     }
 };
+
+BattleManagerTBS.getDirectionFromCellNote = function (cell) {
+    var direction = 2;
+    switch (cell._event.meta['Direction'].toLowerCase().trim()) {
+        case "up":
+            direction = 8;
+            break;
+        case "down":
+            direction = 2;
+            break;
+        case "left":
+            direction = 4;
+            break;
+        case "right":
+            direction = 6;
+            break;
+    }
+    return direction;
+}
 
 BattleManagerTBS.waitForPositioningInput = function () {
     this._subPhase = "wait";
@@ -8605,7 +8631,7 @@ function TBSEntity() {
     });
 }
 
-TBSEntity.prototype.initialize = function (battler, layer) {
+TBSEntity.prototype.initialize = function (battler, layer, direction) {
     this._battler = battler;
     this._cell = null;
     this._cellX = 0;
@@ -8623,7 +8649,7 @@ TBSEntity.prototype.initialize = function (battler, layer) {
     this._isMouseOver = false;
     this._turnHidden = false;
     this.createSprite(battler, layer);
-    this.createSpriteValues();
+    this.createSpriteValues(direction);
     this.createComponents();
     this.setMovePoints();
     this.initializeSpeed();
@@ -8635,11 +8661,11 @@ TBSEntity.prototype.createSprite = function (battler, layer) {
     layer.addChild(this._sprite);
 };
 
-TBSEntity.prototype.createSpriteValues = function () {
+TBSEntity.prototype.createSpriteValues = function (direction) {
     this._posX = 0;
     this._posY = 0;
-    this._dir = 2;
-    this._lastDir = 2;
+    this._dir = direction || 2;
+    this._lastDir = direction || 2;
     this._pose = this.defaultPose();
     this._afterPose = this.defaultPose();
     this._poseLoop = false;

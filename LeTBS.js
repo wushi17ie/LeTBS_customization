@@ -1960,16 +1960,11 @@ BattleManagerTBS.createStartCells = function () {
         if (note.match(/<Enemy Cell>/i)) {
             data.type = "enemy";
         } else if (note.match(/<Enemy Cell\s?:\s?(.+)>,/i)) {   // 逗号后面是 direction
-            console.log(note)
-            console.log(RegExp.$1)
-            console.log(Number(RegExp.$1))
             data.type = "enemy";
             data.fixed = Number(RegExp.$1);
         } else if (note.match(/<Actor Cell>/i)) {
             data.type = "actor";
         } else if (note.match(/<Actor Cell\s?:\s?(.+)>,/i)) {   // 逗号后面是 direction
-            console.log(note)
-            console.log(RegExp.$1)
             data.type = "actor";
             data.fixed = Number(RegExp.$1);
         }
@@ -2257,15 +2252,17 @@ BattleManagerTBS.processPositioningPhase = function () {
     this.processActorsPrePositioning();
     this.processEnemyPositioning();
 
-    InputHandlerTBS.setOnTouchCallback(this.positioningPhaseOnTouchInput.bind(this))
-        .setOnTouchCancelCallback(this.positioningPhaseOnInputCancel.bind(this))
-        .setOnOkCallback(this.positioningPhaseOnInputOk.bind(this))
-        .setOnCancelCallback(this.positioningPhaseOnInputCancel.bind(this))
-        .setOnRightCallback(this.positioningPhaseOnInputRight.bind(this))
-        .setOnLeftCallback(this.positioningPhaseOnInputLeft.bind(this))
-        .setOnDownCallback(this.positioningPhaseOnInputDown.bind(this))
-        .setOnUpCallback(this.positioningPhaseOnInputUp.bind(this))
-        .setOnMoveCallback(this.positioningPhaseOnMouseMove.bind(this));
+    this.battleBeginning();
+
+    // InputHandlerTBS.setOnTouchCallback(this.positioningPhaseOnTouchInput.bind(this))
+    //     .setOnTouchCancelCallback(this.positioningPhaseOnInputCancel.bind(this))
+    //     .setOnOkCallback(this.positioningPhaseOnInputOk.bind(this))
+    //     .setOnCancelCallback(this.positioningPhaseOnInputCancel.bind(this))
+    //     .setOnRightCallback(this.positioningPhaseOnInputRight.bind(this))
+    //     .setOnLeftCallback(this.positioningPhaseOnInputLeft.bind(this))
+    //     .setOnDownCallback(this.positioningPhaseOnInputDown.bind(this))
+    //     .setOnUpCallback(this.positioningPhaseOnInputUp.bind(this))
+    //     .setOnMoveCallback(this.positioningPhaseOnMouseMove.bind(this));
 };
 
 BattleManagerTBS.positioningPhaseOnMouseMove = function () {
@@ -2411,6 +2408,7 @@ BattleManagerTBS.processActorsPrePositioning = function () {
     } while (this._actorsToPositionate.length > 0);
 };
 
+// 处理预设的 enemy 位置
 BattleManagerTBS.processEnemyPositioning = function () {
     this._subPhase = "troop";
     if (Lecode.S_TBS.instantiateAll) {

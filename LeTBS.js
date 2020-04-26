@@ -2390,6 +2390,7 @@ BattleManagerTBS.addEntity = function (battler, cell, anim, isNeutral) {
     return entity;
 };
 
+// 处理预设的 actor 位置
 BattleManagerTBS.processActorsPrePositioning = function () {
     if (this._actorsToPositionate.length === 0) return;
     do {
@@ -2482,7 +2483,8 @@ BattleManagerTBS.positioningSelect = function (cell) {
             entity.startFlash([255, 255, 255, 255], 20, true);
         } else {
             this._currentPositioningEntity.setCell(cell);
-            this.updateEnemiesDirectionForPositioning();
+            if (Lecode.S_TBS.enableDirectionalFacing)
+                this.updateEnemiesDirectionForPositioning();
             this._positioningEntityToSwap = null;
         }
     }
@@ -6491,14 +6493,16 @@ TBSAiManager.prototype.commandUseP3 = function (obj) {
 };
 
 TBSAiManager.prototype.commandPass = function (param) {
-    var look = param[0];
-    switch (look) {
-        case "look_closest_enemy":
-            this._entity.lookClosestBattler(this.getEnemiesOf(this._battler, true));
-            break;
-        case "look_closest_ally":
-            this._entity.lookClosestBattler(this.getAlliesOf(this._battler, true));
-            break;
+    if (Lecode.S_TBS.enableDirectionalFacing) {
+        var look = param[0];
+        switch (look) {
+            case "look_closest_enemy":
+                this._entity.lookClosestBattler(this.getEnemiesOf(this._battler, true));
+                break;
+            case "look_closest_ally":
+                this._entity.lookClosestBattler(this.getAlliesOf(this._battler, true));
+                break;
+        }
     }
     this.forceEnd();
 };

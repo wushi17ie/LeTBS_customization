@@ -110,10 +110,9 @@ Game_Interpreter.prototype.pluginCommand = function (command, args) {
                 break;
             case 'Add':
                 switch (args[1]) {
-                    case "Turn":
-                      var numTurn = Number(args[2]);
-                      LeTBSWinCds.addTurn(numTurn);
-                      break;
+                    case "WinMessage":
+                        LeTBSWinCds.addWinMessage(args[2])
+                        break;
                     case "Defeat":
                         if (args[2] === "All") {
                             LeTBSWinCds.addDefeatAll();
@@ -257,9 +256,8 @@ function LeTBSWinCds() {
 }
 
 LeTBSWinCds.setup = function () {
-    // _turn只用来显示胜利条件
-    // 需要搭配_immediateWin敌群时间使用
-    this._turn = 0;
+    // _winMessage只用于显示，与是否胜利无关
+    this._winMessage = null;
     this._immediateWin = false;
     this._defeatAll = false;
     this._defeatAllEnemies = [];
@@ -276,8 +274,8 @@ LeTBSWinCds.clear = function () {
     this.setup();
 };
 
-LeTBSWinCds.addTurn = function (numTurn) {
-    this._turn = numTurn;
+LeTBSWinCds.addWinMessage = function(message) {
+    this._winMessage = message;
 };
 
 LeTBSWinCds.addImmediateWin = function () {
@@ -315,8 +313,8 @@ LeTBSWinCds.addFlag = function (flagId, flagName) {
 
 LeTBSWinCds.getConditionTexts = function () {
     var texts = [];
-    if (this._turn > 0)
-        texts.push("撑过"+ this._turn + "回合");
+    if (this._winMessage)
+        texts.push(this._winMessage)
     if (this._defeatAll)
         texts.push("Defeat all enemies");
     this._defeatAllEnemies.forEach(function (enemyId) {

@@ -8666,10 +8666,11 @@ TBSEntity.prototype.createSprite = function (battler, layer) {
 TBSEntity.prototype.createSpriteValues = function (direction) {
     this._posX = 0;
     this._posY = 0;
+    this._defaultPose = "idle";
     this._dir = direction || 2;
     this._lastDir = direction || 2;
-    this._pose = this.defaultPose();
-    this._afterPose = this.defaultPose();
+    this._pose = this._defaultPose;
+    this._afterPose = this._defaultPose;
     this._poseLoop = false;
     this._fixedPose = null;
 };
@@ -8751,15 +8752,10 @@ TBSEntity.prototype.isRequestedPosePlayed = function () {
     return !this._requestPlayPose;
 };
 
-TBSEntity.prototype.defaultPose = function () {
-    // This is the idle pose when the turn is active.
-    return "idle";
-};
-
 TBSEntity.prototype.setPose = function (pose, afterPose) {
     this._fixedPose = null;
     this._pose = pose;
-    this._afterPose = afterPose || this.defaultPose();
+    this._afterPose = afterPose || this._defaultPose;
     this._poseLoop = (afterPose === pose);
     this._sprite.updatePose();
     this._sprite.resetFrameCount();
@@ -8792,7 +8788,7 @@ TBSEntity.prototype.onPosePlayed = function (oldPose) {
         this.setPose(oldPose, oldPose);
     } else {
         this.setPose(this._afterPose);
-        this._afterPose = this.defaultPose();
+        this._afterPose = this._defaultPose;
     }
     this._requestPlayPose = false;
 };
@@ -8856,6 +8852,7 @@ TBSEntity.prototype.onBattleStart = function () {
 
 TBSEntity.prototype.onTurnStart = function () {
     this._battler.clearResult();
+    this._defaultPose = "ready";
     this.setMovePoints();
     this.callSequence("turn_start");
     this._turnPlayed = false;
@@ -8871,7 +8868,9 @@ TBSEntity.prototype.onTurnStart = function () {
 };
 
 TBSEntity.prototype.onTurnEnd = function () {
+    this.setPose("idle", "idle");
     this._battler.onTurnEnd();
+    this._defaultPose = "idle";
     this.addPopup();
     this._battler.clearResult();
     this.setMovePoints();
@@ -9344,12 +9343,13 @@ TBSEntity.prototype.moveForward = function (cell) {
         this.setCell(cell);
 };
 
+// 移动之后尚未执行命令的状态，不是命令执行完的状态
 TBSEntity.prototype.onMoveEnd = function () {
     this._moving = false;
     if (this._dead)
         this.setPose("dead", "dead");
     else
-        this.setPose(this.defaultPose());
+        this.setPose(this._defaultPose);
     this._moveReducePoints = false;
 
     if (this._collisionData)
@@ -10063,7 +10063,7 @@ TBSEntity_Sprite.prototype.isReady = function () {
 };
 
 TBSEntity_Sprite.prototype.getPose = function () {
-    return this.isValidPose(this._pose) ? this._pose : this._entity.defaultPose();
+    return this.isValidPose(this._pose) ? this._pose : this._entity._defaultPose;
 };
 
 TBSEntity_Sprite.prototype.getConfig = function () {

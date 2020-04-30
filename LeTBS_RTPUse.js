@@ -31,32 +31,32 @@ Lecode.S_TBS.RTPUse = {};
  *
  * This plugin adds various tags to use RTP graphics automatically for entities
  * and some displays.
- * 
+ *
  * ============================================================================
  * Use Characters For Entities
  * ============================================================================
  *
  * In order for your actors or enemies to use a character as a graphic, use the
  * following instructions inside LeTBS_Sprite tag:
- * 
+ *
  * <letbs_sprite>
  * pose([Pose Name]): use_chara, [Filename], [Index], [LineIndex], [FrameIndex]
  * </letbs_sprite>
- * 
+ *
  * For an actor, the parameters are optional. In such case, the actor's own
  * character will be used.
- * 
+ *
  * ============================================================================
  * Auto Graphic Use
  * ============================================================================
  *
  * Some tags allow to automatically use an entity's graphic on the huds:
- * 
+ *
  * <letbs_sprite>
  * turn_order: auto          Uses the 'idle' graphic on the turn order hud
  * status_sprite: auto       Uses the 'idle' graphic in the status window
  * </letbs_sprite>
- * 
+ *
  */
 //#=============================================================================
 

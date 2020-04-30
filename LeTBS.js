@@ -2252,7 +2252,10 @@ BattleManagerTBS.processPositioningPhase = function () {
     this.processActorsPrePositioning();
     this.processEnemyPositioning();
 
-    this.battleBeginning();
+    // 跳过Battle_Start图片和胜利条件的显示
+    // 但只是不显示，并不是不load，还是跑了很多没用的代码
+    this._phase = "battle_beginning";
+    this._subPhase = "out";
 
     // InputHandlerTBS.setOnTouchCallback(this.positioningPhaseOnTouchInput.bind(this))
     //     .setOnTouchCancelCallback(this.positioningPhaseOnInputCancel.bind(this))

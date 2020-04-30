@@ -1972,7 +1972,8 @@ BattleManagerTBS.createStartCells = function () {
             var cell = new TBSCell(x, y);
             cell._event = eventObj.event();
             cell._positioningData = data;
-            this.createPositioningCell(data.type, x, y, cell);
+            // 不显示红色绿色的初始格子
+            // this.createPositioningCell(data.type, x, y, cell);
             this._startCells.push(cell);
             if (!this._entitiesEvents[x])
                 this._entitiesEvents[x] = {};

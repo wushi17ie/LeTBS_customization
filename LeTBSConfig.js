@@ -161,7 +161,7 @@ Lecode.S_TBS.Config.Marks = {
         triggers: {
             "entering,turn_start": {
                 stop_movement: true,
-    
+
             }
         }
     },
@@ -247,7 +247,7 @@ Lecode.S_TBS.Config.Projectiles = {
         speed: 2,
         trajectory: "bounce(250)"
     },
-    
+
     "dagger": {
         filename: "Dagger",
         adapt_angle: true,
@@ -506,7 +506,7 @@ Lecode.S_TBS.Config.Sequences = {
     ],
 
     "damaged": [
-        "sprite_shake: user, 6, 30",
+        "sprite_shake: user, 3, 30",
         "play_pose: user, hit, wait",
         "set_frame: user, hit, last",
         "wait: 5",

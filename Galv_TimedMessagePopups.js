@@ -434,7 +434,7 @@ Window_GalvCaption.prototype.setWindowDimensions = function() {
 	} else if (this._pos == 1) {
 		this._offsetY += -this.height / 2 - 24;
 	} else if (this._pos == 2) {
-		this._offsetY += Math.abs(this._heightY * 0.2);
+		this._offsetY += this._heightY;
 	};
 };
 

@@ -418,7 +418,10 @@ Window_GalvCaption.prototype.setWindowDimensions = function() {
             w = lineWidth;
         };
 		if (this.skin != 'Window') this.contents.outlineWidth = Galv.Mpup.outlineWidth;
+		var temp = Yanfly.Param.LineHeight;
+		Yanfly.Param.LineHeight = 16;
 		this.drawTextEx(this._txtArray[i], xO, this.lineHeight() * i);
+		Yanfly.Param.LineHeight = temp;
 		
     }
 	this.width = w + xO;

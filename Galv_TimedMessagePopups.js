@@ -116,7 +116,8 @@ Galv.Mpup = Galv.Mpup || {};        // Galv's stuff
 (function() {
 
 Galv.Mpup.thisEvent = null;
-Galv.Mpup.yOffset = Number(PluginManager.parameters('Galv_TimedMessagePopups')['Y Offset']);
+Galv.Mpup.yOffsetDefault = Number(PluginManager.parameters('Galv_TimedMessagePopups')['Y Offset']);
+Galv.Mpup.yOffset = Galv.Mpup.yOffsetDefault;
 Galv.Mpup.windowskin = PluginManager.parameters('Galv_TimedMessagePopups')['Default Windowskin'];
 Galv.Mpup.arrows = PluginManager.parameters('Galv_TimedMessagePopups')['Use Arrows'].toLowerCase() == 'true' ? true : false;
 Galv.Mpup.opac = Number(PluginManager.parameters('Galv_TimedMessagePopups')['Windowskin Back Opacity']);
@@ -153,8 +154,8 @@ Game_Interpreter.prototype.createCaption = function(cap,pos,data) {
 	txtArray[0] = txtArray[0].replace(cap[0],"");
 	
 	var o = cap[1].split(",");
-		var windowskin = o[3];
-		if (windowskin) ImageManager.loadSystem(windowskin);
+	var windowskin = o[4];
+	if (windowskin) ImageManager.loadSystem(windowskin);
 		
 	if (o[0].contains("|")) {
 		// X Y LOCATION
@@ -171,7 +172,10 @@ Game_Interpreter.prototype.createCaption = function(cap,pos,data) {
 	var time = Number(o[1]);
 	var delay = Number(o[2]) || 0;
 
+	if (o[3]) Galv.Mpup.yOffset += Number(o[3]);
+
 	SceneManager._scene.createCaptionWindow(target,time,txtArray,data,delay,windowskin);
+	Galv.Mpup.yOffset = Galv.Mpup.yOffsetDefault;
 };
 
 

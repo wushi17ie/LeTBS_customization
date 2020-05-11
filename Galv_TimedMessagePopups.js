@@ -412,18 +412,18 @@ Window_GalvCaption.prototype.setWindowDimensions = function() {
 	
 	var xO = this._faceName ? Window_Base._faceWidth + 10 : 0;
 	
+	var originalHeight = Yanfly.Param.LineHeight;
+	Yanfly.Param.LineHeight = 16;
 	for (var i = 0; i < this._txtArray.length; i++) {
         var lineWidth = this.textWidthEx(this._txtArray[i]) + this.standardPadding() * 2;
         if (w < lineWidth) {
             w = lineWidth;
         };
 		if (this.skin != 'Window') this.contents.outlineWidth = Galv.Mpup.outlineWidth;
-		var temp = Yanfly.Param.LineHeight;
-		Yanfly.Param.LineHeight = 16;
 		this.drawTextEx(this._txtArray[i], xO, this.lineHeight() * i);
-		Yanfly.Param.LineHeight = temp;
-		
     }
+	Yanfly.Param.LineHeight = originalHeight;
+
 	this.width = w + xO;
 	// CONTENTS IS NOT GETTING WIDER
 	

@@ -885,21 +885,22 @@ Window_Base.prototype.makeFontSmaller = function() {
 Yanfly.Message.Window_Base_processNormalCharacter =
     Window_Base.prototype.processNormalCharacter;
 Window_Base.prototype.processNormalCharacter = function(textState) {
-    if (this.checkWordWrap(textState)) return this.processNewLine(textState);
+    if (this.checkWordWrap(textState)){
+        textState.index-=1;
+        return this.processNewLine(textState);
+    }
     Yanfly.Message.Window_Base_processNormalCharacter.call(this, textState);
 };
 
 Window_Base.prototype.checkWordWrap = function(textState) {
     if (!textState) return false;
     if (!this._wordWrap) return false;
-    if (textState.text[textState.index] === ' ') {
-      var nextSpace = textState.text.indexOf(' ', textState.index + 1);
-      var nextBreak = textState.text.indexOf('\n', textState.index + 1);
-      if (nextSpace < 0) nextSpace = textState.text.length + 1;
-      if (nextBreak > 0) nextSpace = Math.min(nextSpace, nextBreak);
-      var word = textState.text.substring(textState.index, nextSpace);
-      var size = this.textWidthExCheck(word);
-    }
+    var nextSpace = textState.index + 1;
+    var nextBreak = textState.text.indexOf('\n', textState.index + 1);
+    if (nextSpace < 0) nextSpace = textState.text.length + 1;
+    if (nextBreak > 0) nextSpace = Math.min(nextSpace, nextBreak);
+    var word = textState.text.substring(textState.index, nextSpace);
+    var size = this.textWidthExCheck(word);
     return (size + textState.x > this.wordwrapWidth());
 };
 

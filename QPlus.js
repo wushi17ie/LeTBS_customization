@@ -865,6 +865,10 @@ function SimpleTilemap() {
     if (DataManager.isBattleTest() || DataManager.isEventTest()) {
       Alias_Scene_Boot_start.call(this);
     } else if (_PARAMS['Quick Test'] && Utils.isOptionValid('test')) {
+      // Add start call here because LeTBS also overwrote Scene_Boot.prototype.start.
+      // LeTBS needs this to preprocess and add LeTBS tags on sprites.
+      // Otherwise it will error out when entering a battle.
+      Alias_Scene_Boot_start.call(this);
       Scene_Base.prototype.start.call(this);
       SoundManager.preloadImportantSounds();
       this.checkPlayerLocation();

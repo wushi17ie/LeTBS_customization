@@ -202,6 +202,7 @@ Game_Message.prototype.initialize = function() {
 
 Galv.MSE.Window_Message_startMessage = Window_Message.prototype.startMessage;
 Window_Message.prototype.startMessage = function() {
+	AudioManager.playSe($gameMessage.msgConfirmSe);
 	this.delayTime = Galv.MSE.delay;
 	Galv.MSE.Window_Message_startMessage.call(this);
 };
@@ -226,7 +227,6 @@ Window_Message.prototype.processNormalCharacter = function(textState) {
 
 Galv.MSE.Window_Message_terminateMessage = Window_Message.prototype.terminateMessage;
 Window_Message.prototype.terminateMessage = function() {
-	AudioManager.playSe($gameMessage.msgConfirmSe);
 	this.delayTime = Galv.MSE.delay;
     Galv.MSE.Window_Message_terminateMessage.call(this);
 };

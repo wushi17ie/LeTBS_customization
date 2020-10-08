@@ -808,9 +808,9 @@ Spriteset_BattleTBS.prototype.createBattleLayers = function () {
     this._groundEntitiesLayer.z = 1;
     this._tilemap.addChild(this._groundEntitiesLayer);
     //-Ground
-    this._groundLayer = new Sprite();
-    this._groundLayer.z = 2;
-    this._tbsLayer.addChild(this._groundLayer);
+    this._tbsGroundLayer = new Sprite();			// Originally was "_groundLayer" but it was conflicting with OrangeOverlay.
+    this._tbsGroundLayer.z = 2;
+    this._tbsLayer.addChild(this._tbsGroundLayer);
     //-Battlers
     this._battlersLayer = new Sprite();
     this._battlersLayer.z = 4;
@@ -1926,7 +1926,7 @@ BattleManagerTBS.createDirectionSelector = function () {
 BattleManagerTBS.createCursor = function () {
     var bitmap = ImageManager.loadLeTBS("MapCursor");
     this._cursor = new SpriteCursorTBS(bitmap);
-    this.getLayer("ground").addChild(this.cursor());
+    this.getLayer("tbsGround").addChild(this.cursor());
 };
 
 BattleManagerTBS.createBattleStartSprite = function () {

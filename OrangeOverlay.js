@@ -281,7 +281,7 @@ Hudell.OrangeOverlay = Hudell.OrangeOverlay || {};
 //============================================================================
 // Chaucer : removed + $gameMap._mapId from the name, as it's added before.
 //============================================================================
-    layer.bitmap = this.loadBitmap(folderName, fileNamePrefix );
+    layer.bitmap = this.loadBitmap(folderName, fileNamePrefix);
     // layer.bitmap = this.loadBitmap(folderName, fileNamePrefix + $gameMap._mapId);
 //============================================================================
 
@@ -506,7 +506,7 @@ Hudell.OrangeOverlay = Hudell.OrangeOverlay || {};
 // Chaucer : addded check for new grond name.
 //============================================================================
     var parallaxName = $.parallaxName || $.Param.parallaxLayerFileName;
-    if ( !parallaxName ) parallaxName = parallaxName + $gameMap._mapId;
+    if ( !$.parallaxName ) parallaxName = parallaxName + $gameMap._mapId;
 //============================================================================
     this.updateLayer('_parallaxLayer', $.updateParallax, 'pars', parallaxName, 'par', 20, $.Param.parallaxSwitchId);
     $.updateParallax = false;
